@@ -161,7 +161,6 @@
       font-size: 0.95rem;
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
   <div class="container">
@@ -181,10 +180,12 @@
     <p class="empty" id="emptyMsg">아이템을 추가해보세요!</p>
   </div>
 
-  <script>
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
     const SUPABASE_URL = 'https://iulvjgvxocckxbhjnhfo.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1bHZqZ3Z4b2Nja3hiaGpuaGZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxNzAyMjMsImV4cCI6MjA4OTc0NjIyM30.WqSy_vYifnmwDRTtbNuPdPGrlyhfZM_-eGQ9nFvmzxQ';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
     let items = [];
 
@@ -296,6 +297,12 @@
     document.getElementById('itemInput').addEventListener('keydown', e => {
       if (e.key === 'Enter') addItem();
     });
+
+    // type="module" 스코프에서 onclick 핸들러가 접근할 수 있도록 전역 등록
+    window.addItem = addItem;
+    window.toggle = toggle;
+    window.deleteItem = deleteItem;
+    window.clearDone = clearDone;
 
     loadItems();
   </script>
