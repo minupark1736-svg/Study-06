@@ -161,7 +161,7 @@
       font-size: 0.95rem;
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
   <div class="container">
@@ -193,10 +193,12 @@
         .from('shopping_items')
         .select('*')
         .order('created_at', { ascending: true });
-      if (!error) {
-        items = data;
-        render();
+      if (error) {
+        console.error('loadItems error:', error);
+        return;
       }
+      items = data;
+      render();
     }
 
     function render() {
@@ -234,12 +236,15 @@
         .select()
         .single();
 
-      if (!error) {
-        items.push(data);
-        input.value = '';
-        render();
-        input.focus();
+      if (error) {
+        console.error('addItem error:', error);
+        alert('추가 실패: ' + error.message);
+        return;
       }
+      items.push(data);
+      input.value = '';
+      render();
+      input.focus();
     }
 
     async function toggle(id) {
