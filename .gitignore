@@ -1,0 +1,8 @@
+node_modules/
+test-results/
+playwright-report/
+.playwright/
+*.local
+context7_API.txt
+github_API.txt
+.claude/
